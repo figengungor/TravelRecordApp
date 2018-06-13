@@ -156,7 +156,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\user.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\drawable\user.png" />
+    <AndroidResource Include="Resources\drawable\user.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\user.png" />
