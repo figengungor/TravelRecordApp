@@ -55,25 +55,25 @@ namespace TravelRecordApp
                     var center = new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude);
                     var span = new Xamarin.Forms.Maps.MapSpan(center, 2, 2);
                     locationsMap.MoveToRegion(span);
+
+
+                    using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                    {
+                        conn.CreateTable<Post>();
+                        var posts = conn.Table<Post>().ToList();
+
+                        DisplayInMap(posts);
+                    }
                 }
                 else
                 {                 
-                    await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
+                   
                 }
-
-                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-                {
-                    conn.CreateTable<Post>();
-                    var posts = conn.Table<Post>().ToList();
-
-                    DisplayInMap(posts);
-                }
-
 
             }
             catch (Exception e)
             {
-
+                await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
             }
         }
 
