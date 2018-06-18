@@ -24,6 +24,11 @@
                 Text="Log in"
                 Clicked="LoginButton_Clicked"
                 Style="{StaticResource normalButton}"/>
+        <Button x:Name="RegisterUserButton" 
+                Margin="0,50,0,0"
+                Text="Register"
+                HorizontalOptions="End"            
+                Clicked="RegisterUserButton_Clicked"/>
     </StackLayout>
 
 </ContentPage>

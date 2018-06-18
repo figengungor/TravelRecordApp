@@ -35,7 +35,7 @@ namespace TravelRecordApp
             venueListView.ItemsSource = venues;
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             try
             {
@@ -54,9 +54,10 @@ namespace TravelRecordApp
                     Latitude = selectedVenue.location.lat,
                     Longitude = selectedVenue.location.lng,
                     VenueName = selectedVenue.name,
+                    UserId = App.user.Id,
                 };
 
-                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                /*using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
                 {
                     conn.CreateTable<Post>();
                     int row = conn.Insert(post);
@@ -70,15 +71,18 @@ namespace TravelRecordApp
                         DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
                     }
 
-                }
+                }*/
+
+                await App.MobileService.GetTable<Post>().InsertAsync(post);
+                await DisplayAlert("Success", "Experience is added successfuly", "Ok");
             }
             catch (NullReferenceException nre)
             {
-
+                await DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
             }
             catch (Exception ex)
             {
-
+                await DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
             }
 
 

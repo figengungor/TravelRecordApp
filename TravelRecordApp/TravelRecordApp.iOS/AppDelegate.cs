@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 
 using Foundation;
+using Microsoft.WindowsAzure.MobileServices;
 using UIKit;
 
 namespace TravelRecordApp.iOS
@@ -25,6 +26,7 @@ namespace TravelRecordApp.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
+            CurrentPlatform.Init();
 
             string dbName = "travel_db.sqlite";
             string folderPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "..", "Library");

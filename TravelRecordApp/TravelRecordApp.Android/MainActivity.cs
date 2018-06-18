@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Microsoft.WindowsAzure.MobileServices;
 using Plugin.CurrentActivity;
 using Plugin.Permissions;
 
@@ -23,6 +24,7 @@ namespace TravelRecordApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);        
             Xamarin.FormsMaps.Init(this, bundle);
+            CurrentPlatform.Init();
             CrossCurrentActivity.Current.Init(this, bundle);
 
             string dbName = "travel_db.sqlite";
