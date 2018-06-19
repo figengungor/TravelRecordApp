@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:TravelRecordApp"
              x:Class="TravelRecordApp.MainPage">
 
+    <ScrollView>
     <StackLayout VerticalOptions="Center"
                  Margin="20">
         <Image x:Name="iconImage"
@@ -30,5 +31,6 @@
                 HorizontalOptions="End"            
                 Clicked="RegisterUserButton_Clicked"/>
     </StackLayout>
+    </ScrollView>
 
 </ContentPage>

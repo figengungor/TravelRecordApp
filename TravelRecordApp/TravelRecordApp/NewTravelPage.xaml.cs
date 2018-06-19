@@ -1,7 +1,10 @@
 ﻿using Plugin.Geolocator;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,19 +23,59 @@ namespace TravelRecordApp
 			InitializeComponent ();
 		}
 
+        PermissionStatus status;
+        bool hasRequestedPermission = false;
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            Debug.WriteLine("OnAppearing is called from NewTravelPage!!!");
 
-            //TODO: Fix for Android Runtime Permissionsude
+            try
+            {
+                var newStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (newStatus != status || !hasRequestedPermission)//Add these checks to avoid onAppearing loop
+                {
+                    status = newStatus;
 
-            var locator = CrossGeolocator.Current;
+                    if (status != PermissionStatus.Granted)
+                    {
+                        if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                        {
+                            await DisplayAlert("Need permission", "We will have to access your location", "Ok");
+                        }
+                        //This triggers the onAppearing again when permission denied without condition checks
+                        var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                        hasRequestedPermission = true;
+                        status = results[Permission.Location];
+                    }
+                }
 
-            var position = await locator.GetPositionAsync();
+                if (status == PermissionStatus.Granted)
+                {
+                    var locator = CrossGeolocator.Current;
 
-            var venues = await VenueLogic.GetVenues(position.Latitude, position.Longitude);
+                    var position = await locator.GetPositionAsync();
 
-            venueListView.ItemsSource = venues;
+                    var venues = await VenueLogic.GetVenues(position.Latitude, position.Longitude);
+
+                    venueListView.ItemsSource = venues;
+                }
+                else
+                {         
+                    //TODO: check that unpredicted onAppearing later, it happends once or twice
+                    Debug.WriteLine("Permission denied NewTravelPage!!!");
+                    await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
+                }
+
+            }
+            catch (Exception e)
+            {             
+                Debug.WriteLine($"Exception: {e.Message}");
+                //await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
+            }
+
+          
         }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
