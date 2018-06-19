@@ -4,6 +4,7 @@ using Plugin.Permissions.Abstractions;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,24 +22,31 @@ namespace TravelRecordApp
 			InitializeComponent ();
 
 		}
-
+        PermissionStatus status;
+        bool hasRequestedPermission = false;
         protected async override void OnAppearing()
         {
             base.OnAppearing();
             // IsShowingUser="True" set after getting permission
+            Debug.WriteLine("OnAppearing is called!!!!!!!!!!!!");
             try
             {
-                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
-                if (status != PermissionStatus.Granted)
+                var newStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (newStatus!=status || !hasRequestedPermission)//Add these checks to avoid onAppearing loop
                 {
+                    status = newStatus;
 
-                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    if(status != PermissionStatus.Granted)
                     {
-                        await DisplayAlert("Need permission", "We will have to access your location", "Ok");
-                    }
-
-                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
-                    status = results[Permission.Location];
+                        if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                        {
+                            await DisplayAlert("Need permission", "We will have to access your location", "Ok");
+                        }
+                        //This triggers the onAppearing again when permission denied without condition checks
+                        var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                        hasRequestedPermission = true;                     
+                        status = results[Permission.Location];
+                    }                  
                 }
 
                 if (status == PermissionStatus.Granted)
@@ -69,14 +77,16 @@ namespace TravelRecordApp
                     DisplayInMap(posts);
                 }
                 else
-                {                 
-                   
+                {
+                    //When MapPage is appeared first time, this is called twice(onAppearing called twice) but then swiping to MapPage triggers this only once                 
+                    await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
                 }
 
             }
             catch (Exception e)
             {
-                await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
+                //await DisplayAlert("No permission", "You didn't grant permission to access your location, we cannot proceed.", "Ok");
+                Debug.WriteLine($"Exception: {e.Message}");
             }
         }
 
