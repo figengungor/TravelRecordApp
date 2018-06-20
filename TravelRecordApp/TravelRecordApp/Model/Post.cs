@@ -29,5 +29,10 @@ namespace TravelRecordApp.Model
 
         public string UserId { get; set; }
 
+        public static async void Insert(Post post)
+        {
+            await App.MobileService.GetTable<Post>().InsertAsync(post);
+        }
+
     }
 }
