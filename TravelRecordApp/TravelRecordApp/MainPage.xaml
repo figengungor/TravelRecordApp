@@ -13,17 +13,20 @@
                Margin="0, 0, 0, 50"
                HeightRequest="150"/>
         <Entry x:Name="EmailEntry" 
+               Text="{Binding Email, Mode=TwoWay}"
                Placeholder="Email address"
                Keyboard="Email"            
                TextColor="{StaticResource blueColor}"/>
         <Entry x:Name="PasswordEntry"
+               Text="{Binding Password, Mode=TwoWay}"
                Placeholder="Password"
                IsPassword="True"
                TextColor="{StaticResource blueColor}"/>
         <Button x:Name="LoginButton" 
                 Margin="0,50,0,0"
                 Text="Log in"
-                Clicked="LoginButton_Clicked"
+                Command="{Binding LoginCommand}"
+                CommandParameter="{Binding User}"
                 Style="{StaticResource normalButton}"/>
         <Button x:Name="RegisterUserButton" 
                 Margin="0,50,0,0"
