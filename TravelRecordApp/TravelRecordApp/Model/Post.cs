@@ -4,32 +4,141 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.ComponentModel;
 
 namespace TravelRecordApp.Model
 {
-    public class Post
+    public class Post: INotifyPropertyChanged
     {
-        [PrimaryKey, AutoIncrement]  //Sqlite Attributes
-        public string Id { get; set; }
+        private string id;
 
-        [MaxLength(250)] //if Experince is longer than 250 chars, it will throw an error and it will not be saved to db
-        public string Experience { get; set; }
+        public string Id
+        {
+            get { return id; }      
+            set
+            {
+                id = value;
+                OnPropertyChanged("Id");
+            }
+        }
 
-        public string VenueName { get; set; }
+        private string experience;
 
-        public string CategoryId { get; set; }
+        public string Experience
+        {
+            get { return experience; }
+            set
+            {
+                experience = value;
+                OnPropertyChanged("Experience");
+            }
+        }
 
-        public string CategoryName { get; set; }
 
-        public string Address { get; set; }
+        private string venueName;
 
-        public double Latitude { get; set; }
+        public string VenueName
+        {
+            get { return venueName; }
+            set
+            {
+                venueName = value;
+                OnPropertyChanged("VenueName");
+            }  
+        }
 
-        public double Longitude { get; set; }
+        private string categoryId;
 
-        public int Distance { get; set; }
+        public string CategoryId
+        {
+            get { return categoryId; }
+            set
+            {
+                categoryId = value;
+                OnPropertyChanged("CatgeoryId");
+            }
+        }
 
-        public string UserId { get; set; }
+        private string categoryName;
+
+        public string CategoryName
+        {
+            get { return categoryName; }
+            set {
+                categoryName = value;
+                OnPropertyChanged("CategoryName");
+            }
+        }
+
+        private string address;
+
+        public string Address
+        {
+            get { return address; }
+            set
+            {
+                address = value;
+                OnPropertyChanged("Address");
+            }
+        }
+
+        private double latitude;
+
+        public double Latitude
+        {
+            get { return latitude; }
+            set
+            {
+                latitude = value;
+                OnPropertyChanged("Latitude");
+            }
+        }
+
+        private double longitude;
+
+        public double Longitude
+        {
+            get { return longitude; }
+            set
+            {
+                longitude = value;
+                OnPropertyChanged("Longitude");
+            }
+        }
+
+        private int distance;
+
+        public int Distance
+        {
+            get { return distance; }
+            set
+            {
+                distance = value;
+                OnPropertyChanged("Distance");
+            }
+        }
+
+     
+        private string userId;
+
+        public string UserId
+        {
+            get { return userId; }
+            set
+            {
+                userId = value;
+                OnPropertyChanged("UserId");
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if(PropertyChanged!=null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public static async void Insert(Post post)
         {

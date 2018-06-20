@@ -8,9 +8,10 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout x:Name="containerStackLayout">
             <Entry x:Name="experienceEntry" 
-        Placeholder="Write your experience!"/>
+                   Text="{Binding Experience, Mode=TwoWay}"
+                   Placeholder="Write your experience!"/>
             <ListView x:Name="venueListView"
                       Margin="20,0"
             HorizontalOptions="FillAndExpand">

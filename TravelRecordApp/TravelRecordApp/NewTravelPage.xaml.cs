@@ -17,9 +17,13 @@ namespace TravelRecordApp
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class NewTravelPage : ContentPage
 	{
+        Post post;
+
 		public NewTravelPage ()
 		{
-			InitializeComponent ();
+            InitializeComponent();
+            post = new Post();
+            containerStackLayout.BindingContext = post;
 		}
 
         PermissionStatus status;
@@ -81,40 +85,18 @@ namespace TravelRecordApp
         {
             try
             {
-
                 var selectedVenue = venueListView.SelectedItem as Venue;
                 var firstCategory = selectedVenue.categories.FirstOrDefault();
 
-
-                Post post = new Post()
-                {
-                    Experience = experienceEntry.Text,
-                    CategoryId = firstCategory.id,
-                    CategoryName = firstCategory.name,
-                    Address = selectedVenue.location.address,
-                    Distance = selectedVenue.location.distance,
-                    Latitude = selectedVenue.location.lat,
-                    Longitude = selectedVenue.location.lng,
-                    VenueName = selectedVenue.name,
-                    UserId = App.user.Id,
-                };
-
-                /*using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-                {
-                    conn.CreateTable<Post>();
-                    int row = conn.Insert(post);
-
-                    if (row > 0)
-                    {
-                        DisplayAlert("Success", "Experience is added successfuly", "Ok");
-                    }
-                    else
-                    {
-                        DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
-                    }
-
-                }*/
-
+                post.CategoryId = firstCategory.id;
+                post.CategoryName = firstCategory.name;
+                post.Address = selectedVenue.location.address;
+                post.Distance = selectedVenue.location.distance;
+                post.Latitude = selectedVenue.location.lat;
+                post.Longitude = selectedVenue.location.lng;
+                post.VenueName = selectedVenue.name;
+                post.UserId = App.user.Id;
+                       
                 Post.Insert(post);
                 await DisplayAlert("Success", "Experience is added successfuly", "Ok");
             }
@@ -126,7 +108,6 @@ namespace TravelRecordApp
             {
                 await DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
             }
-
 
         }
     }
