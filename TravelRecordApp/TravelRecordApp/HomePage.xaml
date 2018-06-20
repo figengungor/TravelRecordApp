@@ -5,7 +5,7 @@
             x:Class="TravelRecordApp.HomePage">
 
     <TabbedPage.ToolbarItems>
-        <ToolbarItem Text="Add" Icon="add.png" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Add" Icon="add.png" Command="{Binding NavCommand}"/>
     </TabbedPage.ToolbarItems>
     
     <local:HistoryPage Title="History"
