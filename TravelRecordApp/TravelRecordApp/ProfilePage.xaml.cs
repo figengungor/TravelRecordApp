@@ -22,38 +22,15 @@ namespace TravelRecordApp
         {
             base.OnAppearing();
 
-            // using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            //{
 
-            //conn.CreateTable<Post>();
 
-            //var postTable = conn.Table<Post>();
+            var posts = await Post.Read();
 
-            var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
+            var categoriesCount = Post.PostCategories(posts);
 
-            //var posts = postTable.ToList(); //get TableQuery as list with Linq
-                    
-                    //Get list and query from this list similar to sqlite with Linq
-                    var categories = (from p in posts
-                                      orderby p.CategoryId
-                                      select p.CategoryName).Distinct().ToList();
+            categoriesListView.ItemsSource = categoriesCount;
 
-                    Dictionary<string, int> categoriesCount = new Dictionary<string, int>();
-
-                    foreach (var category in categories)
-                    {
-                        var count = (from post in posts
-                                     where post.CategoryName == category
-                                     select post).ToList().Count;
-
-                        categoriesCount.Add(category, count);
-                    }
-
-                    categoriesListView.ItemsSource = categoriesCount;
-
-                    postCountLabel.Text = posts.Count.ToString();
-
-                //}
+            postCountLabel.Text = posts.Count.ToString();
 
         }
     }
