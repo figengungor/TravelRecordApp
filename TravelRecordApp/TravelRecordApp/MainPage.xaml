@@ -32,7 +32,7 @@
                 Margin="0,50,0,0"
                 Text="Register"
                 HorizontalOptions="End"            
-                Clicked="RegisterUserButton_Clicked"/>
+                Command="{Binding RegisterNavigationCommand}"/>
     </StackLayout>
     </ScrollView>
 
