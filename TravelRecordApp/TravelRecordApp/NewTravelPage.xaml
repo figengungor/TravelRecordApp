@@ -4,7 +4,10 @@
     x:Class="TravelRecordApp.NewTravelPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Icon="save.png" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Save" 
+                     Icon="save.png" 
+                     Command="{Binding PostCommand}"
+                     CommandParameter="{Binding Post}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -13,8 +16,9 @@
                    Text="{Binding Experience, Mode=TwoWay}"
                    Placeholder="Write your experience!"/>
             <ListView x:Name="venueListView"
+                      SelectedItem="{Binding Venue, Mode=TwoWay}"
                       Margin="20,0"
-            HorizontalOptions="FillAndExpand">
+                      HorizontalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

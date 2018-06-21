@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TravelRecordApp.Model;
+using TravelRecordApp.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,13 +18,13 @@ namespace TravelRecordApp
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class NewTravelPage : ContentPage
 	{
-        Post post;
+        NewTravelVM newTravelViewModel;
 
 		public NewTravelPage ()
 		{
             InitializeComponent();
-            post = new Post();
-            containerStackLayout.BindingContext = post;
+            newTravelViewModel = new NewTravelVM();
+            BindingContext = newTravelViewModel;
 		}
 
         PermissionStatus status;
@@ -81,34 +82,5 @@ namespace TravelRecordApp
           
         }
 
-        private async void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var selectedVenue = venueListView.SelectedItem as Venue;
-                var firstCategory = selectedVenue.categories.FirstOrDefault();
-
-                post.CategoryId = firstCategory.id;
-                post.CategoryName = firstCategory.name;
-                post.Address = selectedVenue.location.address;
-                post.Distance = selectedVenue.location.distance;
-                post.Latitude = selectedVenue.location.lat;
-                post.Longitude = selectedVenue.location.lng;
-                post.VenueName = selectedVenue.name;
-                post.UserId = App.user.Id;
-                       
-                Post.Insert(post);
-                await DisplayAlert("Success", "Experience is added successfuly", "Ok");
-            }
-            catch (NullReferenceException nre)
-            {
-                await DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Failure", "Experience couldn't be added!", "Ok");
-            }
-
-        }
     }
 }
