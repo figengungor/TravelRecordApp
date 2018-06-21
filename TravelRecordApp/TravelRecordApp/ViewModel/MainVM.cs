@@ -73,14 +73,9 @@ namespace TravelRecordApp.ViewModel
             LoginCommand = new LoginCommand(this);
         }
 
-        public async void Login()
+        public void Login()
         {
-            bool canLogin = await User.Login(User.Email, User.Password);
-
-            if (canLogin)
-                await App.Current.MainPage.Navigation.PushAsync(new HomePage());
-            else
-                await App.Current.MainPage.DisplayAlert("Error", "Try again", "Ok");
+           User.Login(User.Email, User.Password);   
         }
     }
 }
