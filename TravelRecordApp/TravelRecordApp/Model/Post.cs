@@ -202,6 +202,7 @@ namespace TravelRecordApp.Model
 
             var categories = (from p in posts
                               orderby p.CategoryId
+                              where p.CategoryId!=null
                               select p.CategoryName).Distinct().ToList();
 
             Dictionary<string, int> categoriesCount = new Dictionary<string, int>();
