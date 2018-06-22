@@ -19,7 +19,8 @@ namespace TravelRecordApp.ViewModel
 
             var posts = await Post.Read();
             if (posts != null) { //at first start OnAppearing is called twice, to avoid posts to be added twice we do this check
-                foreach(Post post in posts) 
+                Posts.Clear();
+                foreach (Post post in posts) 
                 {
                     Posts.Add(post);
                 }
